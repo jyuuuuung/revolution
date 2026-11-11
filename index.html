@@ -124,6 +124,19 @@ input.bl{font-size:1.05rem;min-height:38px;width:7em}
  #qz{display:grid;grid-template-columns:1fr 1fr;gap:4px 36px;align-items:start}
  #qz>p,#qz>button{grid-column:1/-1}
 }
+/* ---- 가운데 정렬 · 고정 박스 ---- */
+.cv,.v3{margin-left:auto;margin-right:auto}
+.grid>div{text-align:center;align-items:center}
+.grid .row{justify-content:center}
+.grid .res{text-align:left;width:100%}
+.grid input[type=range]{display:block;margin:6px auto}
+.pin{display:flex;align-items:center;gap:18px;padding:10px 18px}
+.pin .pbody{flex:1;min-width:0}
+.pin p{margin:3px 0;line-height:1.55}
+.pin .q{margin:0 0 2px;font-size:.95rem}
+.pin button.sq{flex:0 0 200px;width:200px;min-height:92px;border-radius:12px;line-height:1.4;padding:10px 12px;word-break:keep-all;white-space:normal}
+.pin button.hide{display:none}
+@media(max-width:640px){.pin{flex-direction:column;align-items:stretch}.pin button.sq{width:100%;flex:none;min-height:48px}}
 </style></head><body><div class="wrap">
 <header><div><h1>회전체 탐구</h1>
 <p class="mu">중학교 1학년 · 입체도형 · 직접 만들고, 잘라 보고, 성질을 찾아봐요.</p></div>
@@ -154,10 +167,10 @@ input.bl{font-size:1.05rem;min-height:38px;width:7em}
 <div class="card"><h2>회전체를 잘라서 단면을 살펴봐요</h2>
 <p class="mu">먼저 <b>내 회전체</b>로 성질을 추측하고, 그 다음 네 가지 도형으로 확인해요.</p>
 <div class="row" id="shapes"></div>
-<div id="pred" class="pin"><p class="q">내가 추측한 성질</p>
+<div id="pred" class="pin"><div class="pbody"><p class="q">내가 추측한 성질</p>
 <p>① 회전축에 수직인 평면으로 자른 단면의 경계는 항상 <input class="bl" id="b1" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="빈칸 1"> 이다.</p>
 <p>② 회전축을 포함하는 평면으로 자른 단면은 모두 <input class="bl" id="b2" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="빈칸 2"> 이고, 회전축에 대한 <input class="bl" id="b3" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="빈칸 3"> 이다.</p>
-<div class="row"><button class="pri" id="svp">추측 저장하고 도형으로 확인하기</button><span class="mu" id="pm">내 회전체의 단면을 살펴보고 빈칸을 채워 보세요.</span></div></div>
+<p class="mu" id="pm">내 회전체의 단면을 살펴보고 빈칸을 채워 보세요.</p></div><button class="pri sq" id="svp">추측 저장하고<br>도형으로 확인하기</button></div>
 <div class="grid"><div>
 <div class="v3" id="v2"></div>
 <div class="row"><button id="mPerp" class="on">회전축에 수직인 평면</button><button id="mAxis">회전축을 포함하는 평면</button></div>
