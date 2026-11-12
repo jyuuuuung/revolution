@@ -137,6 +137,14 @@ input.bl{font-size:1.05rem;min-height:38px;width:7em}
 .pin button.sq{flex:0 0 200px;width:200px;min-height:92px;border-radius:12px;line-height:1.4;padding:10px 12px;word-break:keep-all;white-space:normal}
 .pin button.hide{display:none}
 @media(max-width:640px){.pin{flex-direction:column;align-items:stretch}.pin button.sq{width:100%;flex:none;min-height:48px}}
+/* ---- 회전체 개념 쓰기 ---- */
+.think{background:#f5fbfa;border:1px solid #d3ebe7;border-radius:16px;padding:14px 18px;margin:8px 0 14px}
+.think .q{margin:0 0 4px;font-size:1.1rem}
+.think p{margin:4px 0}
+textarea{display:block;width:100%;font:inherit;line-height:1.6;border:1.5px solid var(--bd);border-radius:12px;padding:10px 14px;background:#fff;color:var(--tx);resize:vertical;min-height:70px;margin:8px 0}
+textarea:focus{outline:none;border-color:var(--pr);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+textarea[readonly]{background:#f8fafc;border-color:#b5ddd7}
+#defbox{margin:0 0 14px}
 </style></head><body><div class="wrap">
 <header><div><h1>회전체 탐구</h1>
 <p class="mu">중학교 1학년 · 입체도형 · 직접 만들고, 잘라 보고, 성질을 찾아봐요.</p></div>
@@ -148,7 +156,11 @@ input.bl{font-size:1.05rem;min-height:38px;width:7em}
 
 <section id="a1" class="show">
 <div class="card"><h2>선을 그려서 회전체를 만들어요</h2>
-<p>빨간 점선은 <b>회전축</b>이에요. 회전축 위에서 시작해 오른쪽 칸으로 마우스(손가락)로 선을 그리고 <b>회전체 만들기</b>를 눌러 보세요. 선의 시작과 끝은 자동으로 회전축에 붙어서, 회전시킬 평면도형이 만들어져요.</p>
+<div class="think"><p class="q">회전체는 무엇일까요?</p>
+<p class="mu">만들어진 입체를 관찰한 뒤, 회전체가 무엇인지 자신만의 언어로 작성해보세요.</p>
+<textarea id="own" rows="2" placeholder="회전체는 무엇일까요? 내 생각을 써 보세요." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="회전체는 무엇일까요?"></textarea>
+<div class="row"><button class="pri" id="ownsave">내 생각 저장하고 개념 확인하기</button><span class="mu" id="ownmsg"></span></div></div>
+<div id="defbox" class="res hide"><b>회전체의 개념</b><p style="margin:6px 0">평면도형을 한 직선 l을 축으로 하여 1회전 시킬 때 생기는 입체도형을 ‘회전체’라 하고, 직선 l을 회전축이라 한다.</p><span class="mu">내가 쓴 설명과 비교해 보고, 빠진 말이 있으면 고쳐 써 보세요.</span></div>
 <div class="grid"><div>
 <canvas id="c1" class="cv" width="360" height="360" aria-label="선을 그리는 판"></canvas>
 <div class="row"><button class="pri" id="mk">회전체 만들기</button><button id="clr">지우기</button></div>
@@ -159,7 +171,7 @@ input.bl{font-size:1.05rem;min-height:38px;width:7em}
 <p id="m1" class="res hide"></p>
 </div></div></div>
 <div class="card hide" id="jd"><h2>회전체일까, 아닐까?</h2>
-<p class="mu">방금 배운 정의를 떠올리며, 다음 입체도형이 평면도형을 한 직선을 축으로 1회전 시켜 만들 수 있는지 판단해 보세요. 틀리면 다른 쪽을 눌러 답을 바꿀 수 있어요.</p>
+<p class="mu">방금 배운 개념을 떠올리며, 다음 입체도형이 평면도형을 한 직선을 축으로 1회전 시켜 만들 수 있는지 판단해 보세요. 틀리면 다른 쪽을 눌러 답을 바꿀 수 있어요.</p>
 <div class="jg" id="jg"></div>
 <div class="row"><button id="go2" class="pri" disabled>활동 2 단면 탐구로 넘어가기</button><span class="mu">4개를 모두 맞히면 넘어갈 수 있어요.</span></div></div></section>
 
@@ -244,7 +256,13 @@ document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{const k=b.datase
  raw=raw.map(a=>({x:a[0],y:a[1]}));paint()});
 $("#mk").onclick=()=>{if(raw.length<2){const m=$("#m1");m.className="res";m.textContent="먼저 회전축 오른쪽에 선을 그려 주세요.";return}
  myPts=norm(raw.map(p=>({r:p.x-AX,y:360-p.y})));V1.set(myPts,.95,true);
- const m=$("#m1");m.className="res";m.textContent="평면도형을 한 직선 l을 축으로 하여 1회전 시킬 때 생기는 입체도형을 ‘회전체’라 하고, 직선 l을 회전축이라 한다.";$("#jd").className="card"};
+ $("#m1").className="res hide";$("#ownmsg").textContent="입체를 관찰한 뒤 내 생각을 써 보세요.";};
+const own=$("#own");let ownLocked=false;
+$("#ownsave").onclick=()=>{const msg=$("#ownmsg");
+ if(ownLocked){ownLocked=false;own.readOnly=false;$("#ownsave").textContent="내 생각 저장하고 개념 확인하기";own.focus();return}
+ if(!myPts){msg.textContent="먼저 선을 그려 회전체를 만들어 보세요.";return}
+ if(own.value.trim().length<5){msg.textContent="조금 더 자세히 써 볼까요?";return}
+ ownLocked=true;own.readOnly=true;msg.textContent="";$("#ownsave").textContent="다시 쓰기";$("#defbox").className="res";$("#jd").className="card"};
 $("#go2").onclick=()=>show("a2");
 
 /* ---------- 그림 ---------- */
